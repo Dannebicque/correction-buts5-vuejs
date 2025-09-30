@@ -9,7 +9,7 @@
     <!-- Formulaire d'ajout de tâche -->
     <div class="mb-6 bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <h2 class="text-lg font-semibold text-gray-800 mb-4">Ajouter une nouvelle tâche</h2>
-      <form @submit.prevent="addTask" class="flex space-x-3">
+      <form @submit.prevent="_addTask" class="flex space-x-3">
         <input
           v-model="newTaskText"
           type="text"
@@ -82,10 +82,25 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Task from './Task.vue'
 
-const tasks = ref([])
+
+// Composable pour gérer les tâches
+import useTask from '../composables/useTask'
+
+const { tasks, fetchTasks, addTask } = useTask()
+
+onMounted(() => {
+  fetchTasks()
+})
+
+const _addTask = () => {
+    addTask(newTaskText.value)
+    newTaskText.value = ''
+}
+// fin composable
+
 const newTaskText = ref('')
 const currentFilter = ref('all')
 
@@ -113,17 +128,7 @@ const filteredTasks = computed(() => {
 })
 
 // Ajouter une nouvelle tâche
-const addTask = () => {
-  if (newTaskText.value.trim()) {
-    tasks.value.push({
-      id: Date.now(),
-      text: newTaskText.value.trim(),
-      completed: false,
-      createdAt: new Date()
-    })
-    newTaskText.value = ''
-  }
-}
+
 
 // Basculer l'état de completion d'une tâche
 const toggleTaskComplete = (taskId) => {
