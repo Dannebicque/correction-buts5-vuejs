@@ -1,10 +1,11 @@
 <template>
   <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-3 flex-1 cursor-pointer" @click="viewDetails">
       <input 
         type="checkbox" 
         :checked="task.completed" 
         @change="toggleComplete"
+        @click.stop
         class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
       >
       <span 
@@ -33,6 +34,16 @@
       </span>
       
       <button 
+        @click="viewDetails"
+        class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+        title="Voir les détails"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </button>
+      
+      <button 
         @click="deleteTask"
         class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
         title="Supprimer la tâche"
@@ -53,7 +64,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['toggle-complete', 'delete-task'])
+const emit = defineEmits(['toggle-complete', 'delete-task', 'view-details'])
 
 const toggleComplete = () => {
   emit('toggle-complete')
@@ -61,5 +72,9 @@ const toggleComplete = () => {
 
 const deleteTask = () => {
   emit('delete-task')
+}
+
+const viewDetails = () => {
+  emit('view-details')
 }
 </script>

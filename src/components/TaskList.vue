@@ -76,14 +76,24 @@
         :task="task"
         @toggle-complete="toggleTaskComplete(task.id)"
         @delete-task="deleteTask(task.id)"
+        @view-details="openModal(task)"
       />
     </div>
   </div>
+
+  <!-- Modal de détail de tâche -->
+  <TaskModal 
+    :is-open="isModalOpen"
+    :task="selectedTask"
+    @close="closeModal"
+    @toggle-complete="toggleTaskComplete"
+  />
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import Task from './Task.vue'
+import TaskModal from './TaskModal.vue'
 
 
 // Composable pour gérer les tâches
@@ -103,6 +113,10 @@ const _addTask = () => {
 
 const newTaskText = ref('')
 const currentFilter = ref('all')
+
+// Variables pour la modal
+const isModalOpen = ref(false)
+const selectedTask = ref(null)
 
 const filters = [
   { value: 'all', label: 'Toutes' },
@@ -141,5 +155,16 @@ const toggleTaskComplete = (taskId) => {
 // Supprimer une tâche
 const deleteTask = (taskId) => {
   tasks.value = tasks.value.filter(t => t.id !== taskId)
+}
+
+// Fonctions pour gérer la modal
+const openModal = (task) => {
+  selectedTask.value = task
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+  selectedTask.value = null
 }
 </script>
