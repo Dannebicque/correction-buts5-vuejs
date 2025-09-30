@@ -15,7 +15,9 @@
         }"
         class="text-lg font-medium"
       >
+      <router-link :to="`/task/${task.id}`">
         {{ task.text }}
+        </router-link>
       </span>
     </div>
     

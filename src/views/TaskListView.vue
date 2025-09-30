@@ -78,8 +78,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import Task from './Task.vue'
-import TaskModal from './TaskModal.vue'
+import Task from '@/components/Task.vue'
+import TaskModal from '@/components/TaskModal.vue'
 
 
 // Composable pour gérer les tâches
