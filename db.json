@@ -11,24 +11,24 @@
     {
       "id": "2",
       "text": "Créer un projet",
-      "completed": false,
+      "completed": true,
       "createdAt": "2024-09-15T14:30:00Z",
       "dueDate": "2024-10-15T23:59:59Z",
-      "updatedAt": "2025-09-30T08:19:26.185Z"
-    },
-    {
-      "id": "3",
-      "text": "Déployer l'application",
-      "completed": false,
-      "createdAt": "2024-09-20T09:15:00Z",
-      "dueDate": "2024-11-01T23:59:59Z"
+      "updatedAt": "2025-09-30T08:31:42.679Z"
     },
     {
       "id": "329c",
       "text": "test 4",
-      "completed": false,
+      "completed": true,
       "createdAt": "2025-09-30T08:20:00.945Z",
-      "updatedAt": "2025-09-30T08:20:00.945Z"
+      "updatedAt": "2025-09-30T08:31:29.534Z"
+    },
+    {
+      "id": "ba31",
+      "text": "test",
+      "completed": false,
+      "createdAt": "2025-09-30T08:31:25.846Z",
+      "updatedAt": "2025-09-30T08:31:25.846Z"
     }
   ],
   "users": [
