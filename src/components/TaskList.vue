@@ -6,8 +6,13 @@
       <p class="text-gray-600">Organisez et suivez vos tâches facilement</p>
     </div>
 
+    <!-- Messages d'erreur et de chargement -->
     <div v-if="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 border border-red-300 rounded-lg">
       {{ errorMessage }}
+    </div>
+    
+    <div v-if="isLoading" class="mb-4 p-4 bg-blue-100 text-blue-700 border border-blue-300 rounded-lg">
+      Chargement en cours...
     </div>
 
     <!-- Formulaire d'ajout de tâche -->
@@ -16,10 +21,10 @@
       <form @submit.prevent="_addTask" class="flex space-x-3">
         <input v-model="newTaskText" type="text" placeholder="Entrez votre tâche..."
           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          required>
-        <button type="submit"
-          class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-          Ajouter
+          required :disabled="isLoading">
+        <button type="submit" :disabled="isLoading"
+          class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          {{ isLoading ? 'Ajout...' : 'Ajouter' }}
         </button>
       </form>
     </div>
@@ -80,15 +85,25 @@ import TaskModal from './TaskModal.vue'
 // Composable pour gérer les tâches
 import useTask from '../composables/useTask'
 
-const { tasks, fetchTasks, addTask, errorMessage } = useTask()
+const { 
+  tasks, 
+  errorMessage, 
+  isLoading,
+  fetchTasks, 
+  addTask, 
+  toggleTaskComplete, 
+  deleteTask 
+} = useTask()
 
 onMounted(() => {
   fetchTasks()
 })
 
-const _addTask = () => {
-  addTask(newTaskText.value)
-  newTaskText.value = ''
+const _addTask = async () => {
+  if (newTaskText.value.trim()) {
+    await addTask(newTaskText.value)
+    newTaskText.value = ''
+  }
 }
 // fin composable
 
@@ -121,22 +136,6 @@ const filteredTasks = computed(() => {
       return tasks.value
   }
 })
-
-// Ajouter une nouvelle tâche
-
-
-// Basculer l'état de completion d'une tâche
-const toggleTaskComplete = (taskId) => {
-  const task = tasks.value.find(t => t.id === taskId)
-  if (task) {
-    task.completed = !task.completed
-  }
-}
-
-// Supprimer une tâche
-const deleteTask = (taskId) => {
-  tasks.value = tasks.value.filter(t => t.id !== taskId)
-}
 
 // Fonctions pour gérer la modal
 const openModal = (task) => {
