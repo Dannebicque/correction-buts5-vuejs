@@ -84,24 +84,25 @@ import TaskModal from '@/components/TaskModal.vue'
 
 // Composable pour gérer les tâches
 import useTask from '../composables/useTask'
+import { useTaskStore } from '@/stores/useTaskStore'
+
+const taskStore = useTaskStore()
+const tasks = ref([])
 
 const { 
-  tasks, 
   errorMessage, 
   isLoading,
-  fetchTasks, 
-  addTask, 
   toggleTaskComplete, 
   deleteTask 
 } = useTask()
 
-onMounted(() => {
-  fetchTasks()
+onMounted(async () => {
+  tasks.value = await taskStore.getAllTasks()
 })
 
 const _addTask = async () => {
   if (newTaskText.value.trim()) {
-    await addTask(newTaskText.value)
+    await taskStore.addTask(newTaskText.value)
     newTaskText.value = ''
   }
 }
@@ -121,12 +122,13 @@ const filters = [
 ]
 
 // Calculs des statistiques
-const totalTasks = computed(() => tasks.value.length)
+const totalTasks = computed(() => taskStore.nbTasks)
 const completedTasks = computed(() => tasks.value.filter(task => task.completed).length)
 const pendingTasks = computed(() => tasks.value.filter(task => !task.completed).length)
 
 // Filtrage des tâches
 const filteredTasks = computed(() => {
+  console.log(tasks.value)
   switch (currentFilter.value) {
     case 'completed':
       return tasks.value.filter(task => task.completed)
