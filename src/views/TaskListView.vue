@@ -102,7 +102,7 @@ onMounted(async () => {
 
 const _addTask = async () => {
   if (newTaskText.value.trim()) {
-    await taskStore.addTask(newTaskText.value)
+    await taskStore.addTask({text: newTaskText.value})
     newTaskText.value = ''
   }
 }
